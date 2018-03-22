@@ -1,16 +1,16 @@
 data "template_file" "etcd_hostname_list" {
-  count    = "${var.tectonic_self_hosted_etcd != "" ? 0 : var.tectonic_etcd_count > 0 ? var.tectonic_etcd_count : length(data.aws_availability_zones.azs.names) == 5 ? 5 : 3}"
+  count    = "${var.tectonic_self_hosted_etcd != "" ? 0 : var.tectonic_etcd_count > 0 ? var.tectonic_etcd_count : length(data.scw_availability_zones.azs.names) == 5 ? 5 : 3}"
   template = "${var.tectonic_cluster_name}-etcd-${count.index}.${var.tectonic_base_domain}"
 }
 
 module "bootkube" {
   source         = "../../modules/bootkube"
-  cloud_provider = "aws"
+  cloud_provider = "scw"
 
   cluster_name = "${var.tectonic_cluster_name}"
 
-  kube_apiserver_url = "https://${var.tectonic_aws_private_endpoints ? module.dns.api_internal_fqdn : module.dns.api_external_fqdn}:443"
-  oidc_issuer_url    = "https://${var.tectonic_aws_private_endpoints ? module.dns.ingress_internal_fqdn : module.dns.ingress_external_fqdn}/identity"
+  kube_apiserver_url = "https://${var.tectonic_scw_private_endpoints ? module.dns.api_internal_fqdn : module.dns.api_external_fqdn}:443"
+  oidc_issuer_url    = "https://${var.tectonic_scw_private_endpoints ? module.dns.ingress_internal_fqdn : module.dns.ingress_external_fqdn}/identity"
 
   # Platform-independent variables wiring, do not modify.
   container_images = "${var.tectonic_container_images}"
@@ -48,7 +48,7 @@ module "bootkube" {
 
   # The default behavior of Kubernetes's controller manager is to mark a node
   # as Unhealthy after 40s without an update from the node's kubelet. However,
-  # AWS ELB's Route53 records have a fixed TTL of 60s. Therefore, when an ELB's
+  # scw ELB's Route53 records have a fixed TTL of 60s. Therefore, when an ELB's
   # node disappears (e.g. scaled down or crashed), kubelet might fail to report
   # for a period of time that exceed the default grace period of 40s and the
   # node might become Unhealthy. While the eviction process won't start until
@@ -63,7 +63,7 @@ module "bootkube" {
   # time of 340s after the first post-status failure.
   #
   # Ref: https://github.com/kubernetes/kubernetes/issues/41916
-  # Ref: https://github.com/kubernetes-incubator/kube-aws/issues/598
+  # Ref: https://github.com/kubernetes-incubator/kube-scw/issues/598
   node_monitor_grace_period = "2m"
 
   pod_eviction_timeout = "220s"
@@ -73,12 +73,12 @@ module "bootkube" {
 
 module "tectonic" {
   source   = "../../modules/tectonic"
-  platform = "aws"
+  platform = "scw"
 
   cluster_name = "${var.tectonic_cluster_name}"
 
-  base_address       = "${var.tectonic_aws_private_endpoints ? module.dns.ingress_internal_fqdn : module.dns.ingress_external_fqdn}"
-  kube_apiserver_url = "https://${var.tectonic_aws_private_endpoints ? module.dns.api_internal_fqdn : module.dns.api_external_fqdn}:443"
+  base_address       = "${var.tectonic_scw_private_endpoints ? module.dns.ingress_internal_fqdn : module.dns.ingress_external_fqdn}"
+  kube_apiserver_url = "https://${var.tectonic_scw_private_endpoints ? module.dns.api_internal_fqdn : module.dns.api_external_fqdn}:443"
   service_cidr       = "${var.tectonic_service_cidr}"
 
   # Platform-independent variables wiring, do not modify.

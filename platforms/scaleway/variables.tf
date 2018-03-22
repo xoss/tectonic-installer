@@ -1,39 +1,39 @@
-variable "tectonic_aws_config_version" {
+variable "tectonic_scw_config_version" {
   description = <<EOF
-(internal) This declares the version of the AWS configuration variables.
+(internal) This declares the version of the scw configuration variables.
 It has no impact on generated assets but declares the version contract of the configuration.
 EOF
 
   default = "1.0"
 }
 
-variable "tectonic_aws_profile" {
+variable "tectonic_scw_profile" {
   description = <<EOF
-(optional) This declares the AWS credentials profile to use.
+(optional) This declares the scw credentials profile to use.
 EOF
 
   type    = "string"
   default = "default"
 }
 
-variable "tectonic_aws_ssh_key" {
+variable "tectonic_scw_ssh_key" {
   type        = "string"
-  description = "Name of an SSH key located within the AWS region. Example: coreos-user."
+  description = "Name of an SSH key located within the scw region. Example: coreos-user."
 }
 
-variable "tectonic_aws_master_ec2_type" {
+variable "tectonic_scw_master_ec2_type" {
   type        = "string"
   description = "Instance size for the master node(s). Example: `t2.medium`."
   default     = "t2.medium"
 }
 
-variable "tectonic_aws_worker_ec2_type" {
+variable "tectonic_scw_worker_ec2_type" {
   type        = "string"
   description = "Instance size for the worker node(s). Example: `t2.medium`."
   default     = "t2.medium"
 }
 
-variable "tectonic_aws_etcd_ec2_type" {
+variable "tectonic_scw_etcd_ec2_type" {
   type = "string"
 
   description = <<EOF
@@ -43,13 +43,13 @@ variable "tectonic_aws_etcd_ec2_type" {
   default = "t2.medium"
 }
 
-variable "tectonic_aws_ec2_ami_override" {
+variable "tectonic_scw_ec2_ami_override" {
   type        = "string"
   description = "(optional) AMI override for all nodes. Example: `ami-foobar123`."
   default     = ""
 }
 
-variable "tectonic_aws_etcd_extra_sg_ids" {
+variable "tectonic_scw_etcd_extra_sg_ids" {
   description = <<EOF
 (optional) List of additional security group IDs for etcd nodes.
 
@@ -60,18 +60,18 @@ EOF
   default = []
 }
 
-variable "tectonic_aws_assets_s3_bucket_name" {
+variable "tectonic_scw_assets_s3_bucket_name" {
   type    = "string"
   default = ""
 
   description = <<EOF
 (optional) Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.
 The Tectonic Installer uses the bucket to store tectonic assets and kubeconfig.
-If name is not provided the installer will construct the name using "tectonic_cluster_name", current AWS region and "tectonic_base_domain"
+If name is not provided the installer will construct the name using "tectonic_cluster_name", current scw region and "tectonic_base_domain"
 EOF
 }
 
-variable "tectonic_aws_master_extra_sg_ids" {
+variable "tectonic_scw_master_extra_sg_ids" {
   description = <<EOF
 (optional) List of additional security group IDs for master nodes.
 
@@ -82,7 +82,7 @@ EOF
   default = []
 }
 
-variable "tectonic_aws_worker_extra_sg_ids" {
+variable "tectonic_scw_worker_extra_sg_ids" {
   description = <<EOF
 (optional) List of additional security group IDs for worker nodes.
 
@@ -93,7 +93,7 @@ EOF
   default = []
 }
 
-variable "tectonic_aws_vpc_cidr_block" {
+variable "tectonic_scw_vpc_cidr_block" {
   type    = "string"
   default = "10.0.0.0/16"
 
@@ -103,7 +103,7 @@ This should not overlap with any other networks, such as a private datacenter co
 EOF
 }
 
-variable "tectonic_aws_external_vpc_id" {
+variable "tectonic_scw_external_vpc_id" {
   type = "string"
 
   description = <<EOF
@@ -116,7 +116,7 @@ EOF
   default = ""
 }
 
-variable "tectonic_aws_private_endpoints" {
+variable "tectonic_scw_private_endpoints" {
   default = true
 
   description = <<EOF
@@ -125,7 +125,7 @@ If set to false, no private-facing ingress resources will be provisioned and all
 EOF
 }
 
-variable "tectonic_aws_public_endpoints" {
+variable "tectonic_scw_public_endpoints" {
   default = true
 
   description = <<EOF
@@ -134,7 +134,7 @@ If set to false, no public-facing ingress resources will be created.
 EOF
 }
 
-variable "tectonic_aws_external_private_zone" {
+variable "tectonic_scw_external_private_zone" {
   default = ""
 
   description = <<EOF
@@ -146,7 +146,7 @@ Example: `"Z1ILINNUJGTAO1"`
 EOF
 }
 
-variable "tectonic_aws_external_master_subnet_ids" {
+variable "tectonic_scw_external_master_subnet_ids" {
   type = "list"
 
   description = <<EOF
@@ -159,7 +159,7 @@ EOF
   default = []
 }
 
-variable "tectonic_aws_external_worker_subnet_ids" {
+variable "tectonic_scw_external_worker_subnet_ids" {
   type = "list"
 
   description = <<EOF
@@ -172,9 +172,9 @@ EOF
   default = []
 }
 
-variable "tectonic_aws_extra_tags" {
+variable "tectonic_scw_extra_tags" {
   type        = "map"
-  description = "(optional) Extra AWS tags to be applied to created resources."
+  description = "(optional) Extra scw tags to be applied to created resources."
   default     = {}
 }
 
@@ -183,7 +183,7 @@ variable "tectonic_autoscaling_group_extra_tags" {
   default = []
 
   description = <<EOF
-(optional) Extra AWS tags to be applied to created autoscaling group resources.
+(optional) Extra scw tags to be applied to created autoscaling group resources.
 This is a list of maps having the keys `key`, `value` and `propagate_at_launch`.
 
 Example: `[ { key = "foo", value = "bar", propagate_at_launch = true } ]`
@@ -196,19 +196,19 @@ variable "tectonic_dns_name" {
   description = "(optional) DNS prefix used to construct the console and API server endpoints."
 }
 
-variable "tectonic_aws_etcd_root_volume_type" {
+variable "tectonic_scw_etcd_root_volume_type" {
   type        = "string"
   default     = "gp2"
   description = "The type of volume for the root block device of etcd nodes."
 }
 
-variable "tectonic_aws_etcd_root_volume_size" {
+variable "tectonic_scw_etcd_root_volume_size" {
   type        = "string"
   default     = "30"
   description = "The size of the volume in gigabytes for the root block device of etcd nodes."
 }
 
-variable "tectonic_aws_etcd_root_volume_iops" {
+variable "tectonic_scw_etcd_root_volume_iops" {
   type    = "string"
   default = "100"
 
@@ -218,19 +218,19 @@ Ignored if the volume type is not io1.
 EOF
 }
 
-variable "tectonic_aws_master_root_volume_type" {
+variable "tectonic_scw_master_root_volume_type" {
   type        = "string"
   default     = "gp2"
   description = "The type of volume for the root block device of master nodes."
 }
 
-variable "tectonic_aws_master_root_volume_size" {
+variable "tectonic_scw_master_root_volume_size" {
   type        = "string"
   default     = "30"
   description = "The size of the volume in gigabytes for the root block device of master nodes."
 }
 
-variable "tectonic_aws_master_root_volume_iops" {
+variable "tectonic_scw_master_root_volume_iops" {
   type    = "string"
   default = "100"
 
@@ -240,19 +240,19 @@ Ignored if the volume type is not io1.
 EOF
 }
 
-variable "tectonic_aws_worker_root_volume_type" {
+variable "tectonic_scw_worker_root_volume_type" {
   type        = "string"
   default     = "gp2"
   description = "The type of volume for the root block device of worker nodes."
 }
 
-variable "tectonic_aws_worker_root_volume_size" {
+variable "tectonic_scw_worker_root_volume_size" {
   type        = "string"
   default     = "30"
   description = "The size of the volume in gigabytes for the root block device of worker nodes."
 }
 
-variable "tectonic_aws_worker_root_volume_iops" {
+variable "tectonic_scw_worker_root_volume_iops" {
   type    = "string"
   default = "100"
 
@@ -262,7 +262,7 @@ Ignored if the volume type is not io1.
 EOF
 }
 
-variable "tectonic_aws_master_custom_subnets" {
+variable "tectonic_scw_master_custom_subnets" {
   type    = "map"
   default = {}
 
@@ -274,7 +274,7 @@ Example:
 EOF
 }
 
-variable "tectonic_aws_worker_custom_subnets" {
+variable "tectonic_scw_worker_custom_subnets" {
   type    = "map"
   default = {}
 
@@ -285,13 +285,13 @@ Example: `{ eu-west-1a = "10.0.64.0/20", eu-west-1b = "10.0.80.0/20" }`
 EOF
 }
 
-variable "tectonic_aws_region" {
+variable "tectonic_scw_region" {
   type        = "string"
   default     = "eu-west-1"
-  description = "The target AWS region for the cluster."
+  description = "The target scw region for the cluster."
 }
 
-variable "tectonic_aws_master_iam_role_name" {
+variable "tectonic_scw_master_iam_role_name" {
   type    = "string"
   default = ""
 
@@ -300,12 +300,12 @@ variable "tectonic_aws_master_iam_role_name" {
 The name is also the last part of a role's ARN.
 
 Example:
- * Role ARN  = arn:aws:iam::123456789012:role/tectonic-installer
+ * Role ARN  = arn:scw:iam::123456789012:role/tectonic-installer
  * Role Name = tectonic-installer
 EOF
 }
 
-variable "tectonic_aws_worker_iam_role_name" {
+variable "tectonic_scw_worker_iam_role_name" {
   type    = "string"
   default = ""
 
@@ -314,12 +314,12 @@ variable "tectonic_aws_worker_iam_role_name" {
 The name is also the last part of a role's ARN.
 
 Example:
- * Role ARN  = arn:aws:iam::123456789012:role/tectonic-installer
+ * Role ARN  = arn:scw:iam::123456789012:role/tectonic-installer
  * Role Name = tectonic-installer
 EOF
 }
 
-variable "tectonic_aws_etcd_iam_role_name" {
+variable "tectonic_scw_etcd_iam_role_name" {
   type    = "string"
   default = ""
 
@@ -328,12 +328,12 @@ variable "tectonic_aws_etcd_iam_role_name" {
 The name is also the last part of a role's ARN.
 
 Example:
- * Role ARN  = arn:aws:iam::123456789012:role/tectonic-installer
+ * Role ARN  = arn:scw:iam::123456789012:role/tectonic-installer
  * Role Name = tectonic-installer
 EOF
 }
 
-variable "tectonic_aws_worker_load_balancers" {
+variable "tectonic_scw_worker_load_balancers" {
   type    = "list"
   default = []
 
